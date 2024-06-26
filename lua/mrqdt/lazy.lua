@@ -1,4 +1,4 @@
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim" -- installs lazy if not installed
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
     "git",
@@ -11,6 +11,7 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({ { import = "mrqdt.plugins" }, { import = "mrqdt.plugins.lsp" } }, {
+  -- lazy settings
   checker = {
     enabled = true,
     notify = false,

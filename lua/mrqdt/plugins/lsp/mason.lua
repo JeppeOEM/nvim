@@ -31,13 +31,11 @@ return {
         "html",
         "cssls",
         "tailwindcss",
-        "svelte",
         "lua_ls",
-        "graphql",
         "emmet_ls",
-        "prismals",
         "pyright",
       },
+      automatic_installation = true, -- if server not listed install it
     })
 
     mason_tool_installer.setup({
@@ -46,8 +44,8 @@ return {
         "stylua", -- lua formatter
         "isort", -- python formatter
         "black", -- python formatter
-        "pylint", -- python linter
-        "eslint_d", -- js linter
+        "pylint",
+        "eslint_d",
       },
     })
   end,
