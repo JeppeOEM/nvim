@@ -5,7 +5,8 @@ end
 
 -- Function to open file at cursor
 local function open_file_at_cursor()
-  local node = require("nvim-tree.lib").get_node_at_cursor()
+  local current_buf = vim.api.nvim_get_current_buf()
+  local node = require("nvim-tree.lib").get_node_for_buf(current_buf)
   if node and node.absolute_path then
     vim.cmd("edit " .. node.absolute_path)
   end
@@ -57,7 +58,17 @@ return {
         ignore = false,
       },
     })
+    local function toggle_insert_mode_on_click()
+      vim.cmd([[
+        augroup NvimTreeMouseClick
+        autocmd!
+        autocmd CursorMoved,CursorMovedI * if winnr('$') != 0 && &filetype == 'NvimTree' && mode() == 'i' | stopinsert | endif
+        augroup END
+      ]])
+    end
 
+    -- Toggle insert mode when clicking on the nvim-tree buffer
+    toggle_insert_mode_on_click()
     -- set keymaps
     local keymap = vim.keymap -- for conciseness
 
@@ -69,11 +80,38 @@ return {
       open_with_feh(require("nvim-tree.lib").get_node_at_cursor())
     end, { desc = "Open image with feh" })
 
+    -- Add this inside your `config` function in your nvim-tree setup
+    keymap.set("v", "<A-left>", function()
+      -- Switch to insert mode in the nvim-tree pane
+      --YY
+      vim.cmd("NvimTreeToggle")
+      vim.cmd("NvimTreeToggle")
+      vim.schedule(function()
+        vim.cmd("autocmd WinEnter * if &filetype == 'NvimTree' | startinsert | endif")
+      end)
+    end, { desc = "Toggle nvim-tree and enter insert mode" })
+
+    keymap.set("n", "<A-left>", function()
+      -- Switch to insert mode in the nvim-tree pane
+      --
+      vim.cmd("NvimTreeToggle")
+      vim.cmd("NvimTreeToggle")
+      vim.schedule(function()
+        vim.cmd("autocmd WinEnter * if &filetype == 'NvimTree' | startinsert | endif")
+      end)
+    end, { desc = "Toggle nvim-tree and enter insert mode" })
+
     -- Autocommand to set keymaps in Nvim Tree buffer
     vim.api.nvim_create_autocmd("FileType", {
       pattern = "NvimTree",
       callback = function()
-        vim.api.nvim_buf_set_keymap(0, "i", "<Esc>", ":lua open_file_at_cursor()<CR>", { noremap = true, silent = true })
+        vim.api.nvim_buf_set_keymap(
+          0,
+          "i",
+          "<Esc>",
+          ":lua open_file_at_cursor()<CR>",
+          { noremap = true, silent = true }
+        )
       end,
     })
   end,
