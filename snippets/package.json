@@ -1,0 +1,17 @@
+{
+  "name": "custom-snippets",
+  "contributes": {
+    "snippets": [
+      {
+        "language": [
+          "all"
+        ],
+        "path": "./snips/custom.json"
+      }
+    ]
+  }
+}
+
+
+// And my snippets looks like this.
+

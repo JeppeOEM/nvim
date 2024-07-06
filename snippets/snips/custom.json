@@ -1,0 +1,5 @@
+  "wiki document": {
+    "prefix": "tis",
+    "body" : ["---\ntitle: ${0}\ndescription:\npublished: true\ndate: ${2}\ntags: ${3}\neditor: markdown\ndateCreated:${4}\n---\n"],
+    "description": "New Wiki entry"
+  }
